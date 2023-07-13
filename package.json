@@ -1,0 +1,23 @@
+{
+  "name": "holiculture",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Holiculture/Holiculture.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Holiculture/Holiculture/issues"
+  },
+  "homepage": "https://github.com/Holiculture/Holiculture#readme",
+  "dependencies": {
+    "express": "^4.18.2",
+    "xlsx": "^0.18.5"
+  }
+}

@@ -47,10 +47,27 @@ const getRestaurant = (posX, posY) => {
       return response.json();
     })
     .then((data) => {
-      console.log(data);
+      console.log(data.documents[0]);
+      getImg(data.documents[0].place_name);
     });
 };
 
 getRestaurant(127.07083238839516, 37.548888556812464);
 
 // ----------------------------- 이미지 검색 ---------------------------------
+
+const getImg = (restaurantName) => {
+  fetch(
+    `https://dapi.kakao.com/v2/search/image?sort=accuracy&page=1&query=${restaurantName}&size=3`,
+    {
+      method: "GET",
+      headers: { Authorization: process.env.KAKAO_API },
+    }
+  )
+    .then((response) => {
+      return response.json();
+    })
+    .then((data) => {
+      console.log(data.documents.map((it) => it.image_url));
+    });
+};

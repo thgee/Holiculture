@@ -21,7 +21,7 @@ app.use((req, res, next) => {
 //  ================ 라우팅 ================
 app.use("/ticket", require("./routes/ticket"));
 app.use("/getuuid", require("./routes/getuuid"));
-// app.use("/food", require("./routes/food.js"));
+// app.use("/food", require("./routes/food"));
 
 // ====================== 서버실행 =================
 app.listen(8080, () => {

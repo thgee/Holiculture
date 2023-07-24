@@ -3,7 +3,7 @@ let router = require("express").Router();
 // ----------------------------- 이미지 검색 함수 ---------------------------------
 
 const getImg = (restaurantName) => {
-  fetch(
+  return fetch(
     `https://dapi.kakao.com/v2/search/image?sort=accuracy&page=1&query=${restaurantName}&size=3`,
     {
       method: "GET",
@@ -14,11 +14,12 @@ const getImg = (restaurantName) => {
       return response.json();
     })
     .then((data) => {
-      console.log(data.documents.map((it) => it.image_url));
+      const imgs = data.documents.map((it) => it.image_url);
+      return imgs;
+      // 식당 이미지를 배열로 반환
     });
 };
-
-// =========================== 식당 제공 API =======================
+// =========================== 식당정보 API =======================
 
 // 클라이언트가 넘겨주는 것은 공연장 이름과 uuid ->
 // 티켓컬렉션에서 uuid일치, 공연장이름 일치하는 좌표 찾고 ->
@@ -31,7 +32,6 @@ router.get("/get", (req, response) => {
   db.collection("ticket").findOne(
     { uuid: req.body.uuid, place: req.body.place },
     (err, result) => {
-      console.log(result);
       fetch(
         `https://dapi.kakao.com/v2/local/search/category.json?category_group_code=FD6&page=1&size=15&sort=accuracy&x=${parseFloat(
           result.posX
@@ -46,15 +46,31 @@ router.get("/get", (req, response) => {
         .then((response) => {
           return response.json();
         })
-        .then((data) => {
-          console.log(data.documents[0]);
-          if (!data.documents[0])
+        .then(async (data) => {
+          if (!data.documents[0]) {
             return response
               .status(200)
               .send(`주변 ${req.query.distance}m 거리에 식당이 없습니다`);
-          getImg(data.documents[0]?.place_name);
-          // 식당정보중 필요한것과,  식당 이미지들을 객체에 넣고,
-          // 이 객체 여러개를 배열로 만들어 제공해야함
+          }
+
+          let foods = data.documents?.map((food) => {
+            return {
+              place_name: food.place_name,
+              place_url: food.place_url,
+              category_name: food.category_name?.match(/>([^>]+)$/)[1]?.trim(),
+              distance: food.distance,
+              x: food.x,
+              y: food.y,
+              road_address_name: food.road_address_name,
+            };
+          });
+          return foods;
+        })
+        .then(async (foods) => {
+          for (let i = 0; i < foods.length; i++) {
+            foods[i].imgs = await getImg(foods[i].place_name);
+          }
+          response.status(200).send(foods);
         });
     }
   );

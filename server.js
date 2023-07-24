@@ -19,7 +19,7 @@ app.use((req, res, next) => {
 });
 
 //  ================ 라우팅 ================
-app.use("/addTicket", require("./routes/addTicket"));
+app.use("/ticket", require("./routes/ticket"));
 // app.use("/food", require("./routes/food.js"));
 
 app.listen(8080, () => {

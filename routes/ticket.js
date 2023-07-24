@@ -1,6 +1,7 @@
 let router = require("express").Router();
 
 // ================ 티켓등록 =====================
+
 router.post("/add", (req, response) => {
   let db = req.db; // server.js 에서 넘겨준 db
   db.collection("counter").findOne({ name: "ticketId" }, (err, result) => {

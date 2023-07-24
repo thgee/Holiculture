@@ -1,9 +1,9 @@
 const express = require("express");
 const app = express();
-require("dotenv").config();
-const MongoClient = require("mongodb").MongoClient;
-app.use(express.urlencoded({ extended: true }));
-app.use(express.json());
+require("dotenv").config(); // 환경변수
+const MongoClient = require("mongodb").MongoClient; // 몽고db 연결
+app.use(express.urlencoded({ extended: true })); // x-xxx-form-urlencoded post 요청 가능하게 함
+app.use(express.json()); // json형식 post요청 가능하게 함
 
 // ================ DB 연결 ==================
 let db;
@@ -20,8 +20,10 @@ app.use((req, res, next) => {
 
 //  ================ 라우팅 ================
 app.use("/ticket", require("./routes/ticket"));
+app.use("/getuuid", require("./routes/getuuid"));
 // app.use("/food", require("./routes/food.js"));
 
+// ====================== 서버실행 =================
 app.listen(8080, () => {
   console.log(
     "서버실행 ============================================================================="

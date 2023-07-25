@@ -28,6 +28,7 @@ app.use("/ticket", require("./routes/ticket"));
 app.use("/uuid", require("./routes/getuuid"));
 app.use("/food", require("./routes/food"));
 app.use("/room", require("./routes/room"));
+app.use("/play", require("./routes/play"));
 
 // ====================== 서버실행 =================
 app.listen(8080, () => {

@@ -1,7 +1,8 @@
 const express = require("express");
 const app = express();
-require("dotenv").config(); // 환경변수
 const MongoClient = require("mongodb").MongoClient; // 몽고db 연결
+require("dotenv").config(); // 환경변수
+
 app.use(express.urlencoded({ extended: true })); // x-xxx-form-urlencoded post 요청 가능하게 함
 app.use(express.json()); // json형식 post요청 가능하게 함
 

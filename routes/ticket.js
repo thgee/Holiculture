@@ -22,8 +22,8 @@ router.post("/add", (req, response) => {
           {
             _id: result.id + 1,
             ...req.body,
-            posX: data.documents[0].x,
-            posY: data.documents[0].y,
+            posX: data.documents[0]?.x,
+            posY: data.documents[0]?.y,
           },
           () => {
             db.collection("counter").updateOne(
@@ -39,10 +39,10 @@ router.post("/add", (req, response) => {
 
 // ================ 티켓삭제 =====================
 
-router.delete("/delete", (req, response) => {
+router.delete("/delete/:ticketId", (req, response) => {
   let db = req.db; // server.js 에서 넘겨준 db
   db.collection("ticket").deleteOne(
-    { _id: parseInt(req.body.ticketId) },
+    { _id: parseInt(req.params.ticketId) },
     (err, result) => {
       if (result.deletedCount === 0) {
         return response

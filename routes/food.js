@@ -1,24 +1,6 @@
-let router = require("express").Router();
+const router = require("express").Router();
+const getImg = require("../utils/getImg");
 
-// ----------------------------- 이미지 검색 함수 ---------------------------------
-
-const getImg = (restaurantName) => {
-  return fetch(
-    `https://dapi.kakao.com/v2/search/image?sort=accuracy&page=1&query=${restaurantName}&size=3`,
-    {
-      method: "GET",
-      headers: { Authorization: process.env.KAKAO_API },
-    }
-  )
-    .then((response) => {
-      return response.json();
-    })
-    .then((data) => {
-      const imgs = data.documents.map((it) => it.image_url);
-      return imgs;
-      // 식당 이미지를 배열로 반환
-    });
-};
 // =========================== 식당정보 API =======================
 
 // 클라이언트가 넘겨주는 것은 공연장 이름과 uuid ->
@@ -68,7 +50,7 @@ router.get("/get", (req, response) => {
         })
         .then(async (foods) => {
           for (let i = 0; i < foods.length; i++) {
-            foods[i].imgs = await getImg(foods[i].place_name);
+            foods[i].imgs = await getImg(foods[i].place_name, 3);
           }
           response.status(200).send(foods);
         });

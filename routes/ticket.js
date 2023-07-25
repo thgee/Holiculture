@@ -45,13 +45,23 @@ router.delete("/delete/:ticketId", (req, response) => {
     { _id: parseInt(req.params.ticketId) },
     (err, result) => {
       if (result.deletedCount === 0) {
-        return response
-          .status(404)
-          .json({ error: "해당 티켓을 찾을 수 없습니다." });
+        return response.status(404).send();
       }
       response.status(200).send();
     }
   );
+});
+
+// ================ 티켓조회 =====================
+
+router.get("/get", (req, response) => {
+  let db = req.db;
+  db.collection("ticket")
+    .find({ uuid: req.body.uuid })
+    .toArray((err, result) => {
+      if (!result) return response.status(404).send();
+      response.status(200).send(result);
+    });
 });
 
 module.exports = router;

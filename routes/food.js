@@ -7,13 +7,17 @@ router.get("/", (req, response) => {
   db.collection("ticket").findOne(
     { uuid: req.body.uuid, concert: req.body.concert },
     (err, result) => {
-      getCate(result, "FD6", req.query.distance).then((foods) => {
-        if (foods.length === 0) {
+      getCate(result, "FD6", req.query.distance).then((places) => {
+        if (places.length === 0) {
           return response
             .status(200)
             .send(`근처 ${req.query.distance}m 거리에 식당이 없습니다`);
         }
-        response.status(200).send(foods);
+
+        places.forEach((place) => {
+          place.cate = "식당";
+        });
+        response.status(200).send(places);
       });
     }
   );

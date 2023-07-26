@@ -37,3 +37,4 @@ app.use("/room", require("./routes/room"));
 app.use("/play", require("./routes/play"));
 app.use("/like", require("./routes/like"));
 app.use("/board", require("./routes/board"));
+app.use("/comment", require("./routes/comment"));

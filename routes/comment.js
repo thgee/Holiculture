@@ -8,64 +8,70 @@ router.use((req, res, next) => {
 
 // ================== 댓글 추가 ==================
 
-router.post("/add", (req, response) => {
-  db.collection("counter").findOne({ name: "postId" }, (err, result) => {
-    try {
-      if (err) {
-        throw new Error("Error finding postId counter");
-      }
-
-      if (!result) {
-        throw new Error("postId counter not found");
-      }
-
-      db.collection("board").insertOne(
-        { _id: result.id + 1, commentCounter: 0, ...req.body },
-        (err, result) => {
-          if (err) {
-            throw new Error("Error adding new post");
-          }
-
-          db.collection("counter").updateOne(
-            { name: "postId" },
-            { $inc: { id: 1 } },
-            (err, result) => {
-              if (err) {
-                throw new Error("Error updating postId counter");
-              }
-
-              response.status(200).send();
-            }
-          );
+router.post("/add/:postId", (req, response) => {
+  db.collection("counter").findOne(
+    { name: "commentId" },
+    (err, result_counter) => {
+      try {
+        if (err) {
+          throw new Error("db 연결 오류");
         }
-      );
-    } catch (err) {
-      console.error(err.message);
-      response.status(500).send("Internal Server Error");
+        db.collection("board").findOne(
+          { _id: parseInt(req.params.postId) },
+          (err, result_post) => {
+            db.collection("comment").insertOne(
+              {
+                _id: result_counter.id + 1,
+                fk: parseInt(req.params.postId),
+                num: parseInt(result_post?.commentCounter + 1),
+                ...req.body,
+              },
+              (err, result) => {
+                if (err) throw new Error("중복된 id");
+
+                db.collection("board").updateOne(
+                  { _id: parseInt(req.params.postId) },
+                  { $inc: { commentCounter: 1 } }
+                );
+
+                db.collection("counter").updateOne(
+                  { name: "commentId" },
+                  { $inc: { id: 1 } },
+                  (err, result) => {
+                    if (err) throw err;
+
+                    response.status(200).send();
+                  }
+                );
+              }
+            );
+          }
+        );
+      } catch (err) {
+        console.error(err.message);
+        response.status(500).send("Internal Server Error");
+      }
     }
-  });
+  );
 });
 
 // ================== 댓글 삭제 ==================
 
-router.delete("/delete/:postId", (req, response) => {
-  db.collection("comment")
-    .deleteMany({ fk: parseInt(req.params.postId) })
-    .then((res) => {
-      db.collection("board").deleteOne(
-        { _id: parseInt(req.params.postId) },
-        (err, result) => {
-          if (err) throw new Error("board db 연결 실패");
-          if (result.deletedCount === 0)
-            response.status(404).send("존재하지 않는 게시물");
-          response.status(200).send();
-        }
-      );
-    })
-    .catch((err) => {
-      console.log(err.message);
-      response.status(500).send("Internal Server Error");
-    });
+router.delete("/delete/:commentId", (req, response) => {
+  try {
+    db.collection("comment").deleteOne(
+      { _id: parseInt(req.params.commentId) },
+      (err, result) => {
+        if (err) throw new Error("db 연결 실패");
+        if (result.deletedCount === 0)
+          response.status(404).send("존재하지 않는 댓글");
+        response.status(200).send();
+      }
+    );
+  } catch (err) {
+    console.log(err.message);
+    response.status(500).send("Internal Server Error");
+  }
 });
 
 // ================== 댓글 조회 ==================

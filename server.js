@@ -14,6 +14,12 @@ MongoClient.connect(
   function (err, client) {
     if (err) return console.log(err);
     db = client.db("Holliculture");
+    // ====================== 서버실행 =================
+    app.listen(8080, () => {
+      console.log(
+        "서버실행 ============================================================================="
+      );
+    });
   }
 );
 
@@ -30,10 +36,4 @@ app.use("/food", require("./routes/food"));
 app.use("/room", require("./routes/room"));
 app.use("/play", require("./routes/play"));
 app.use("/like", require("./routes/like"));
-
-// ====================== 서버실행 =================
-app.listen(8080, () => {
-  console.log(
-    "서버실행 ============================================================================="
-  );
-});
+app.use("/board", require("./routes/board"));

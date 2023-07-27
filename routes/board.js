@@ -23,7 +23,7 @@ router.post("/add", (req, response) => {
         { _id: result.id + 1, commentCounter: 0, ...req.body },
         (err, result) => {
           if (err) {
-            throw new Error("Error adding new post");
+            throw err;
           }
 
           db.collection("counter").updateOne(
@@ -63,9 +63,7 @@ router.delete(
           else if (result?.uuid === req.body?.uuid) next();
           else response.status(403).send("작성자가 아닌 유저가 삭제를 시도함");
         },
-        (err) => {
-          throw err;
-        }
+        (err) => response.status(500).send("Internal Server Error")
       );
   },
   (req, response) => {
@@ -92,7 +90,7 @@ router.delete(
 router.get("/get", (req, response) => {
   try {
     db.collection("board")
-      .find({ address: req.query.address })
+      .find({ address: req.query.address || "-1" })
       .toArray((err, result) => {
         if (err) throw new Error("board db 연결 실패");
         response.status(200).send(result);

@@ -21,32 +21,52 @@ router.post("/add/:postId", (req, response) => {
           (err, result_post) => {
             if (!result_post)
               return response.status(404).send("없는 게시물에 접근");
-            db.collection("comment").insertOne(
-              {
-                _id: result_counter.id + 1,
-                fk: parseInt(req.params.postId),
-                num: parseInt(result_post?.commentCounter + 1),
-                ...req.body,
-              },
-              (err, result) => {
-                if (err) throw new Error("중복된 id");
 
-                db.collection("board").updateOne(
-                  { _id: parseInt(req.params.postId) },
-                  { $inc: { commentCounter: 1 } }
-                );
+            /*
+            해당 게시글에 해당 유저가 댓글을 남긴적이 있다면?
+              그 유저가 남긴 첫 번째 댓글의 num을 그대로 넣어서 저장해야 한다. 
+              (같은사람의 댓글은 익명 번호가 같아야 하므로)
+            */
+            db.collection("comment")
+              .findOne({ uuid: req.body.uuid })
+              .then((res) => {
+                console.log(res);
+                let num;
+                if (res) num = res.num;
+                else num = parseInt(result_post?.commentCounter + 1);
 
-                db.collection("counter").updateOne(
-                  { name: "commentId" },
-                  { $inc: { id: 1 } },
+                // 댓글 저장
+                db.collection("comment").insertOne(
+                  {
+                    _id: result_counter.id + 1,
+                    fk: parseInt(req.params.postId),
+                    num: num,
+                    ...req.body,
+                  },
                   (err, result) => {
-                    if (err) throw err;
+                    if (err) throw new Error("중복된 id");
 
-                    response.status(200).send();
+                    if (!res)
+                      db.collection("board").updateOne(
+                        { _id: parseInt(req.params.postId) },
+                        { $inc: { commentCounter: 1 } }
+                      );
+
+                    db.collection("counter").updateOne(
+                      { name: "commentId" },
+                      { $inc: { id: 1 } },
+                      (err, result) => {
+                        if (err) throw err;
+
+                        response.status(200).send();
+                      }
+                    );
                   }
                 );
-              }
-            );
+              })
+              .catch((err) => {
+                throw err;
+              });
           }
         );
       } catch (err) {

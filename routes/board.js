@@ -51,7 +51,7 @@ router.post("/add", (req, response) => {
 
 router.delete(
   "/delete/:postId",
-  // 삭제하는 자와 게시물 작성자가 일치하는지 확인하는 작업
+  // 삭제하는 자와 게시물 작성자가 일치하는지 확인하는 미들웨어
   (req, response, next) => {
     db.collection("board")
       .findOne({

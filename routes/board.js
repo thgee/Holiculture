@@ -49,25 +49,43 @@ router.post("/add", (req, response) => {
 // ================== 게시물 삭제 ==================
 // 게시물의 댓글도 모두 삭제시켜야 함
 
-router.delete("/delete/:postId", (req, response) => {
-  db.collection("comment")
-    .deleteMany({ fk: parseInt(req.params.postId) })
-    .then((res) => {
-      db.collection("board").deleteOne(
-        { _id: parseInt(req.params.postId) },
-        (err, result) => {
-          if (err) throw new Error("board db 연결 실패");
-          if (result.deletedCount === 0)
-            response.status(404).send("존재하지 않는 게시물");
-          response.status(200).send();
+router.delete(
+  "/delete/:postId",
+  // 삭제하는 자와 게시물 작성자가 일치하는지 확인하는 작업
+  (req, response, next) => {
+    db.collection("board")
+      .findOne({
+        _id: parseInt(req.params.postId),
+      })
+      .then(
+        (result) => {
+          if (!result) return response.status(404).send("존재하지 않는 게시물");
+          else if (result?.uuid === req.body?.uuid) next();
+          else response.status(403).send("작성자가 아닌 유저가 삭제를 시도함");
+        },
+        (err) => {
+          throw err;
         }
       );
-    })
-    .catch((err) => {
-      console.log(err.message);
-      response.status(500).send("Internal Server Error");
-    });
-});
+  },
+  (req, response) => {
+    db.collection("comment")
+      .deleteMany({ fk: parseInt(req.params.postId) })
+      .then((res) => {
+        db.collection("board").deleteOne(
+          { _id: parseInt(req.params.postId) },
+          (err, result) => {
+            if (err) throw new Error("board db 연결 실패");
+            response.status(200).send();
+          }
+        );
+      })
+      .catch((err) => {
+        console.log(err.message);
+        response.status(500).send("Internal Server Error");
+      });
+  }
+);
 
 // ================== 게시물 조회 ==================
 

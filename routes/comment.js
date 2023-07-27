@@ -19,6 +19,8 @@ router.post("/add/:postId", (req, response) => {
         db.collection("board").findOne(
           { _id: parseInt(req.params.postId) },
           (err, result_post) => {
+            if (!result_post)
+              return response.status(404).send("없는 게시물에 접근");
             db.collection("comment").insertOne(
               {
                 _id: result_counter.id + 1,
@@ -57,22 +59,40 @@ router.post("/add/:postId", (req, response) => {
 
 // ================== 댓글 삭제 ==================
 
-router.delete("/delete/:commentId", (req, response) => {
-  try {
-    db.collection("comment").deleteOne(
-      { _id: parseInt(req.params.commentId) },
-      (err, result) => {
-        if (err) throw new Error("db 연결 실패");
-        if (result.deletedCount === 0)
-          response.status(404).send("존재하지 않는 댓글");
-        response.status(200).send();
-      }
-    );
-  } catch (err) {
-    console.log(err.message);
-    response.status(500).send("Internal Server Error");
+router.delete(
+  "/delete/:commentId",
+
+  // 삭제하는 자와 댓글 작성자가 일치하는지 확인하는 미들웨어
+  (req, response, next) => {
+    db.collection("comment")
+      .findOne({
+        _id: parseInt(req.params.commentId),
+      })
+      .then(
+        (result) => {
+          if (!result) return response.status(404).send("존재하지 않는 댓글");
+          else if (result?.uuid === req.body?.uuid) next();
+          else response.status(403).send("작성자가 아닌 유저가 삭제를 시도함");
+        },
+        (err) => response.status(500).send("Internal Server Error")
+      );
+  },
+
+  (req, response) => {
+    try {
+      db.collection("comment").deleteOne(
+        { _id: parseInt(req.params.commentId) },
+        (err, result) => {
+          if (err) throw new Error("db 연결 실패");
+          response.status(200).send("삭제 성공");
+        }
+      );
+    } catch (err) {
+      console.log(err.message);
+      response.status(500).send("Internal Server Error");
+    }
   }
-});
+);
 
 // ================== 댓글 조회 ==================
 

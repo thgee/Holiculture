@@ -42,7 +42,7 @@ router.delete("/delete/:likeId", (req, response) => {
 router.get("/get", (req, response) => {
   let db = req.db;
   db.collection("like")
-    .find({ uuid: req.body.uuid })
+    .find({ uuid: req.header("uuid") })
     .toArray((err, result) => {
       if (!result) return response.status(404).send();
       response.status(200).send(result);

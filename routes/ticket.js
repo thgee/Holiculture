@@ -30,11 +30,11 @@ router.post("/add", (req, response) => {
               { name: "ticketId" },
               { $inc: { id: 1 } }
             );
+            response.status(200).send("complete");
           }
         );
       });
   });
-  response.status(200).send();
 });
 
 // ================ 티켓삭제 =====================
@@ -59,7 +59,8 @@ router.get("/get", (req, response) => {
   db.collection("ticket")
     .find({ uuid: req.header("uuid") })
     .toArray((err, result) => {
-      if (!result) return response.status(404).send();
+      console.log(result);
+      if (result.length === 0) return response.status(404).send("티켓없음");
       response.status(200).send(result);
     });
 });

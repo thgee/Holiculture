@@ -8,6 +8,12 @@
 // getImg 두번째 인자로 이미지 개수 설정 가능
 
 const getImg = require("../utils/getImg");
+const getBlogNaver = require("../utils/getBlogNaver");
+
+// Naver api 호출 속도제한을 피하기 위해 생성한 함수
+function wait(ms) {
+  return new Promise((resolve) => setTimeout(resolve, ms));
+}
 
 // 매개변수 : (찾은 티켓, 찾을 장소의 카테고리, 탐색범위m)
 const getCate = (ticket, cate, distance) => {
@@ -33,14 +39,18 @@ const getCate = (ticket, cate, distance) => {
           x: place.x,
           y: place.y,
           road_address_name: place.road_address_name,
+          address_name: place.address_name,
         };
       });
       return places;
     })
     .then(async (places) => {
       for (let i = 0; i < places.length; i++) {
-        places[i].imgs = await getImg(places[i].place_name, 3);
+        await wait(50);
+        Object.assign(places[i], await getBlogNaver(places[i]));
+        places[i].imgs = await getImg(places[i], 1);
       }
+      console.log(places.length);
       return places;
     });
 };

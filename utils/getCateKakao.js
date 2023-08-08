@@ -7,8 +7,8 @@
 // getCate에서 getImg 함수를 사용하여 이미지까지 넣어준 후 반환해줌
 // getImg 두번째 인자로 이미지 개수 설정 가능
 
-const getImg = require("../utils/getImg");
-const getBlogNaver = require("../utils/getBlogNaver");
+const getImgNaver = require("./getImgNaver");
+const getBlogNaver = require("./getBlogNaver");
 
 // Naver api 호출 속도제한을 피하기 위해 생성한 함수
 function wait(ms) {
@@ -16,7 +16,7 @@ function wait(ms) {
 }
 
 // 매개변수 : (찾은 티켓, 찾을 장소의 카테고리, 탐색범위m)
-const getCate = (ticket, cate, distance) => {
+const getCateKakao = (ticket, cate, distance) => {
   return fetch(
     `https://dapi.kakao.com/v2/local/search/category.json?category_group_code=${cate}&page=1&size=15&sort=accuracy&x=${parseFloat(
       ticket?.posX
@@ -48,11 +48,10 @@ const getCate = (ticket, cate, distance) => {
       for (let i = 0; i < places.length; i++) {
         await wait(50);
         Object.assign(places[i], await getBlogNaver(places[i]));
-        places[i].imgs = await getImg(places[i], 1);
+        Object.assign(places[i], await getImgNaver(places[i].place_name));
       }
-      console.log(places.length);
       return places;
     });
 };
 
-module.exports = getCate;
+module.exports = getCateKakao;

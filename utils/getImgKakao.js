@@ -1,8 +1,8 @@
 // ----------------------------- 이미지 검색 함수 ---------------------------------
 
-const getImg = (place_name, numOfImage) => {
+const getImgKakao = (place_name) => {
   return fetch(
-    `https://dapi.kakao.com/v2/search/image?sort=accuracy&page=1&query=${place_name}&size=${numOfImage}`,
+    `https://dapi.kakao.com/v2/search/image?sort=accuracy&page=1&query=${place_name}&size=1`,
     {
       method: "GET",
       headers: { Authorization: process.env.KAKAO_API },
@@ -12,9 +12,9 @@ const getImg = (place_name, numOfImage) => {
       return response.json();
     })
     .then((data) => {
-      const imgs = data.documents.map((it) => it.image_url);
-      return imgs;
+      const img = data.documents[0].image_url;
+      return img;
     });
 };
 
-module.exports = getImg;
+module.exports = getImgKakao;

@@ -16,10 +16,8 @@ const getBlogNaver = (place) => {
       return response.json();
     })
     .then((data) => {
-      console.log(data);
-
       // 검색되는 블로그가 없다면 getCate에서 해당 식당을 제외시킴
-      return data.items.length
+      return data.items?.length
         ? {
             blogTitle: data.items[0].title.replace(/<[^>]+>/g, ""),
             blogLink: data.items[0].link,

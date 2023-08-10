@@ -20,12 +20,13 @@ router.post("/add", (req, response) => {
       .then((data) => {
         db.collection("ticket").insertOne(
           {
-            _id: result.id + 1,
             ...req.body,
+            _id: result.id + 1,
             posX: data.documents[0]?.x,
             posY: data.documents[0]?.y,
           },
-          () => {
+          (err, res) => {
+            if (err) return response.status(400).send("중복된 id");
             db.collection("counter").updateOne(
               { name: "ticketId" },
               { $inc: { id: 1 } }

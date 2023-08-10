@@ -8,8 +8,8 @@ router.post("/add", (req, response) => {
     if (err) return console.log("counter db 연결 에러");
     db.collection("like").insertOne(
       {
-        _id: result.id + 1,
         ...req.body,
+        _id: result.id + 1,
       },
       () => {
         db.collection("counter").updateOne(

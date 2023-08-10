@@ -38,10 +38,10 @@ router.post("/add/:postId", (req, response) => {
                 // 댓글 저장
                 db.collection("comment").insertOne(
                   {
+                    ...req.body,
                     _id: result_counter.id + 1,
                     fk: parseInt(req.params.postId),
                     num: num,
-                    ...req.body,
                   },
                   (err, result) => {
                     if (err) throw new Error("중복된 id");

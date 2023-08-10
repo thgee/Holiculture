@@ -20,7 +20,7 @@ router.post("/add", (req, response) => {
       }
 
       db.collection("board").insertOne(
-        { _id: result.id + 1, commentCounter: 0, ...req.body },
+        { ...req.body, _id: result.id + 1, commentCounter: 0 },
         (err, result) => {
           if (err) {
             throw err;

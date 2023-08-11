@@ -14,7 +14,6 @@ router.get("/", (req, response) => {
       getCateKakao(result, "AD5", req.query.distance).then(async (places) => {
         for (let i = 0; i < places.length; i++) {
           places[i].cate = "숙소";
-          console.log(i);
           let placeInfo = await getPlaceInfoNaver(places[i]);
 
           // 네이버 검색결과가 없으면 places 배열에서 제외시킴
@@ -28,14 +27,10 @@ router.get("/", (req, response) => {
             placeInfo?.keywords != 0 ? placeInfo?.keywords : [];
 
           // 이미지 추출
-          try {
-            let roomImg = placeInfo.images.find(
-              (it) => it.groupName === "기본 정보"
-            ).url;
-            places[i].img = roomImg;
-          } catch (err) {
-            console.log(places[i]);
-          }
+          let roomImg = placeInfo.images.find(
+            (it) => it.groupName === "기본 정보"
+          ).url;
+          places[i].img = roomImg;
         }
 
         response.status(200).send(places);

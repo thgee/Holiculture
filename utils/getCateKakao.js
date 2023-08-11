@@ -9,16 +9,12 @@
 
 const getImgNaver = require("./getImgNaver");
 const getBlogNaver = require("./getBlogNaver");
-
-// Naver api 호출 속도제한을 피하기 위해 생성한 함수
-function wait(ms) {
-  return new Promise((resolve) => setTimeout(resolve, ms));
-}
+const getPlaceInfoNaver = require("./getPlaceInfoNaver");
 
 // 매개변수 : (찾은 티켓, 찾을 장소의 카테고리, 탐색범위m)
 const getCateKakao = (ticket, cate, distance) => {
   return fetch(
-    `https://dapi.kakao.com/v2/local/search/category.json?category_group_code=${cate}&page=1&size=15&sort=accuracy&x=${parseFloat(
+    `https://dapi.kakao.com/v2/local/search/category.json?category_group_code=${cate}&page=1&size=7&sort=accuracy&x=${parseFloat(
       ticket?.posX
     )}&y=${parseFloat(ticket?.posY)}&radius=${parseInt(distance) || 500}`,
     {
@@ -46,9 +42,10 @@ const getCateKakao = (ticket, cate, distance) => {
     })
     .then(async (places) => {
       for (let i = 0; i < places.length; i++) {
-        await wait(50);
-        Object.assign(places[i], await getBlogNaver(places[i]));
-        Object.assign(places[i], await getImgNaver(places[i].place_name));
+        let placeInfo = await getPlaceInfoNaver(places[i]);
+        let foodImg = placeInfo?.themes?.baemin?.items[0]?.menus[0]?.imageUrl;
+        places[i].keywords = placeInfo?.keywords; // keyword 없을 시 0으로 저장
+        places[i].img = foodImg ? foodImg : placeInfo?.images[0].url;
       }
       return places;
     });

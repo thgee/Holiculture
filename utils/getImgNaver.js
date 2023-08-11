@@ -15,7 +15,6 @@ const getImgNaver = (place_name) => {
       return response.json();
     })
     .then((data) => {
-      // console.log("======================================", data.items[0]);
       return data.items?.length
         ? {
             img: data.items[0].link,

@@ -1,5 +1,3 @@
-// ----------------------------- 이미지 검색 함수 ---------------------------------
-
 const getImgNaver = (place_name) => {
   return fetch(
     `https://openapi.naver.com/v1/search/image.json?query=${place_name}&display=1`,

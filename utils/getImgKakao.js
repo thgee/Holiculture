@@ -1,5 +1,3 @@
-// ----------------------------- 이미지 검색 함수 ---------------------------------
-
 const getImgKakao = (place_name) => {
   return fetch(
     `https://dapi.kakao.com/v2/search/image?sort=accuracy&page=1&query=${place_name}&size=1`,

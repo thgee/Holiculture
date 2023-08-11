@@ -16,6 +16,12 @@ router.get("/", (req, response) => {
 
           let placeInfo = await getPlaceInfoNaver(places[i]);
 
+          // 네이버 검색결과가 없으면 places 배열에서 제외시킴
+          if (!placeInfo.id) {
+            places.splice(i--, 1);
+            continue;
+          }
+
           // 키워드 추출
           places[i].keywords =
             placeInfo?.keywords != 0 ? placeInfo?.keywords : [];

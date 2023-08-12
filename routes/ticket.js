@@ -31,7 +31,7 @@ router.post("/add", (req, response) => {
               { name: "ticketId" },
               { $inc: { id: 1 } }
             );
-            response.status(200).send("complete");
+            response.status(200).send("티켓 등록 완료");
           }
         );
       });
@@ -46,7 +46,7 @@ router.delete("/delete/:ticketId", (req, response) => {
     { _id: parseInt(req.params.ticketId) },
     (err, result) => {
       if (result.deletedCount === 0) {
-        return response.status(404).send();
+        return response.status(404).send("존재하지 않는 티켓입니다");
       }
       response.status(200).send();
     }
@@ -64,6 +64,20 @@ router.get("/get", (req, response) => {
       if (result.length === 0) return response.status(404).send("티켓없음");
       response.status(200).send(result);
     });
+});
+
+// ================ 티켓수정 =====================
+
+router.put("/edit/:id", (req, response) => {
+  let db = req.db;
+  db.collection("ticket").updateOne(
+    { _id: parseInt(req.params.id) },
+    { $set: { ...req.body, _id: req.params.id } },
+    (res) => {
+      console.log(res);
+      response.status(200).send("티켓 수정 완료");
+    }
+  );
 });
 
 module.exports = router;

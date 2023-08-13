@@ -45,6 +45,7 @@ router.delete("/delete/:ticketId", (req, response) => {
   db.collection("ticket").deleteOne(
     { _id: parseInt(req.params.ticketId) },
     (err, result) => {
+      console.log(result);
       if (result.deletedCount === 0) {
         return response.status(404).send("존재하지 않는 티켓입니다");
       }
@@ -70,12 +71,25 @@ router.get("/get", (req, response) => {
 
 router.put("/edit/:id", (req, response) => {
   let db = req.db;
+
+  // 스위프트에서 _id를 또 넘겨줄 것이라, _id값의 재선언을 피하기 위해 추가함
+  delete req.body._id;
+
   db.collection("ticket").updateOne(
     { _id: parseInt(req.params.id) },
-    { $set: { ...req.body, _id: req.params.id } },
-    (res) => {
-      console.log(res);
-      response.status(200).send("티켓 수정 완료");
+    { $set: { ...req.body } },
+    (err, result) => {
+      try {
+        if (err) response.status(500).send("인터넷 오류");
+
+        if (result?.matchedCount === 0)
+          response.status(404).send("티켓을 찾을 수 없음");
+
+        if (result?.matchedCount === 1)
+          response.status(200).send("티켓 수정 완료");
+      } catch (err) {
+        console.log(err.message);
+      }
     }
   );
 });

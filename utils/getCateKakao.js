@@ -27,11 +27,12 @@ const getCateKakao = (ticket, cate, distance) => {
         };
       });
 
-      // 이미지 추가 작업
+      // 이미지 추가 작업 (이미지가 없다면 places에서 제거시킴)
       for (let i = 0; i < places.length; i++) {
-        places[i].img = await getImgKakao(places[i]);
+        console.log(places[i], i);
+        let image = await getImgKakao(places[i]);
+        image ? (places[i].img = image) : places.splice(i--, 1);
       }
-
       return places;
     });
 };

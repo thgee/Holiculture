@@ -1,3 +1,5 @@
+const getImgKakao = require("./getImgKakao");
+
 const getCateKakao = (ticket, cate, distance) => {
   return fetch(
     `https://dapi.kakao.com/v2/local/search/category.json?category_group_code=${cate}&page=1&size=10&sort=accuracy&x=${parseFloat(
@@ -24,6 +26,12 @@ const getCateKakao = (ticket, cate, distance) => {
           address_name: place.address_name,
         };
       });
+
+      // 이미지 추가 작업
+      for (let i = 0; i < places.length; i++) {
+        places[i].img = await getImgKakao(places[i]);
+      }
+
       return places;
     });
 };

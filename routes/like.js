@@ -25,15 +25,15 @@ router.post("/add", (req, response) => {
 
 // ================ 좋아요 삭제 =====================
 
-router.delete("/delete/:likeId", (req, response) => {
+router.delete("/delete/:address", (req, response) => {
   let db = req.db;
   db.collection("like").deleteOne(
-    { _id: parseInt(req.params.likeId) },
+    { road_address_name: req.params.address, uuid: req.headers.uuid },
     (err, result) => {
       if (result.deletedCount === 0) {
-        return response.status(404).send();
+        return response.status(404).send("삭제 실패");
       }
-      response.status(200).send();
+      response.status(200).send("삭제 성공");
     }
   );
 });

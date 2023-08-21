@@ -75,23 +75,41 @@ router.put("/edit/:id", (req, response) => {
   // 스위프트에서 _id를 또 넘겨줄 것이라, _id값의 재선언을 피하기 위해 추가함
   delete req.body._id;
 
-  db.collection("ticket").updateOne(
-    { _id: parseInt(req.params.id) },
-    { $set: { ...req.body } },
-    (err, result) => {
-      try {
-        if (err) response.status(500).send("인터넷 오류");
-
-        if (result?.matchedCount === 0)
-          response.status(404).send("티켓을 찾을 수 없음");
-
-        if (result?.matchedCount === 1)
-          response.status(200).send("티켓 수정 완료");
-      } catch (err) {
-        console.log(err.message);
-      }
+  fetch(
+    `https://dapi.kakao.com/v2/local/search/address.json?analyze_type=similar&page=1&size=10&query=${req.body.address}`,
+    {
+      method: "GET",
+      headers: { Authorization: process.env.KAKAO_API },
     }
-  );
+  )
+    .then((response) => {
+      return response.json();
+    })
+    .then((data) => {
+      db.collection("ticket").updateOne(
+        { _id: parseInt(req.params.id) },
+        {
+          $set: {
+            ...req.body,
+            posX: data.documents[0]?.x,
+            posY: data.documents[0]?.y,
+          },
+        },
+        (err, result) => {
+          try {
+            if (err) response.status(500).send("인터넷 오류");
+
+            if (result?.matchedCount === 0)
+              response.status(404).send("티켓을 찾을 수 없음");
+
+            if (result?.matchedCount === 1)
+              response.status(200).send("티켓 수정 완료");
+          } catch (err) {
+            console.log(err.message);
+          }
+        }
+      );
+    });
 });
 
 module.exports = router;

@@ -1,3 +1,4 @@
+const getBlogNaver = require("./getBlogNaver");
 const getImgKakao = require("./getImgKakao");
 
 const getCateKakao = (ticket, cate, distance) => {
@@ -27,11 +28,25 @@ const getCateKakao = (ticket, cate, distance) => {
         };
       });
 
-      // 이미지 추가 작업
       for (let i = 0; i < places.length; i++) {
-        places[i].img = await getImgKakao(places[i]);
-      }
+        // 이미지 추가 작업 (이미지가 없다면 places에서 제거시킴)
+        let image = await getImgKakao(places[i]);
+        if (image) places[i].img = image;
+        else {
+          places.splice(i--, 1);
+          continue;
+        }
 
+        // 블로그 추가 작업
+        let { blogTitle, blogLink } = await getBlogNaver(places[i]);
+        if (blogTitle) {
+          places[i].blogTitle = blogTitle;
+          places[i].blogLink = blogLink;
+        } else {
+          places.splice(i--, 1);
+          continue;
+        }
+      }
       return places;
     });
 };

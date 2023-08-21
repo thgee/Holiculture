@@ -9,10 +9,12 @@ router.get("/", (req, response) => {
     (err, result) => {
       if (err) return response.status(500).send("internet error");
       if (!result) return response.status(404).send("invalid ticket or uuid");
-      getCateKakao(result, "FD6", req.query.distance).then(async (places) => {
-        places.forEach((place) => (place.cate = "식당"));
-        response.status(200).send(places);
-      });
+      getCateKakao(result, "FD6", req.query.distance, db).then(
+        async (places) => {
+          places.forEach((place) => (place.cate = "식당"));
+          response.status(200).send(places);
+        }
+      );
     }
   );
 });

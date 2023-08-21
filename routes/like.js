@@ -9,6 +9,7 @@ router.post("/add", (req, response) => {
     db.collection("like").insertOne(
       {
         ...req.body,
+        isLike: true,
         _id: result.id + 1,
       },
       () => {

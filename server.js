@@ -22,7 +22,6 @@ MongoClient.connect(
     });
   }
 );
-
 // 몽고 DB 객체를 미들웨어로 전달
 app.use((req, res, next) => {
   req.db = db; // req 객체에 db를 저장하여 다른 라우트에서 사용할 수 있도록 함
@@ -38,3 +37,4 @@ app.use("/play", require("./routes/play"));
 app.use("/like", require("./routes/like"));
 app.use("/board", require("./routes/board"));
 app.use("/comment", require("./routes/comment"));
+app.use("/art", require("./routes/getArt"));

@@ -47,16 +47,6 @@ const getCateKakao = (ticket, cate, distance, db) => {
           places.splice(i--, 1);
           continue;
         }
-
-        // 블로그 추가 작업
-        let { blogTitle, blogLink } = await getBlogNaver(places[i]);
-        if (blogTitle) {
-          places[i].blogTitle = blogTitle;
-          places[i].blogLink = blogLink;
-        } else {
-          places.splice(i--, 1);
-          continue;
-        }
       }
 
       return places;

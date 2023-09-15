@@ -1,4 +1,5 @@
 const express = require("express");
+const tourApi = require("./utils/tourApi");
 const app = express();
 const MongoClient = require("mongodb").MongoClient; // 몽고db 연결
 require("dotenv").config(); // 환경변수

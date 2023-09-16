@@ -24,7 +24,6 @@ const getCateKakao = (ticket, cate, distance, db) => {
           x: place.x,
           y: place.y,
           road_address_name: place.road_address_name,
-          address_name: place.address_name,
         };
       });
 

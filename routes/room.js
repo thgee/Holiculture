@@ -13,7 +13,6 @@ router.get("/", (req, response) => {
 
       getCateKakao(result, "AD5", req.query.distance, db).then(
         async (places) => {
-          places.forEach((place) => (place.cate = "숙소"));
           response.status(200).send(places);
         }
       );

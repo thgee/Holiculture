@@ -11,7 +11,6 @@ router.get("/", (req, response) => {
       if (!result) return response.status(404).send("invalid ticket or uuid");
       getCateKakao(result, "FD6", req.query.distance, db).then(
         async (places) => {
-          places.forEach((place) => (place.cate = "식당"));
           response.status(200).send(places);
         }
       );

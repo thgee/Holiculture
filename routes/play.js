@@ -11,23 +11,40 @@ router.get("/", (req, response) => {
       if (err) return response.status(500).send("internet error");
       if (!result) return response.status(404).send("invalid ticket or uuid");
 
-      const places = await tourApi(result, req.query.distance, db);
+      const tourRes = await tourApi(result, req.query.distance, db);
+      const places = [];
 
-      for (let i = 0; i < places.length; i++) {
-        places[i].cate = "즐길거리";
-
+      for (let i = 0; i < tourRes?.length; i++) {
         // 이미지 없는 데이터 필터과정
-        if (places[i].firstimage.length === 0) {
-          places.splice(i--, 1);
+        if (tourRes[i].firstimage.length === 0) {
+          tourRes.splice(i--, 1);
           continue;
         }
 
-        // 카테고리 필터과정 (32, 39 제외)
-        const contenttypeid = parseInt(places[i].contenttypeid);
+        // 카테고리 필터과정 (숙박:32, 식당:39 제외)
+        const contenttypeid = parseInt(tourRes[i].contenttypeid);
         if (contenttypeid === 32 || contenttypeid === 39) {
-          places.splice(i--, 1);
+          tourRes.splice(i--, 1);
           continue;
         }
+
+        places.push({
+          place_name: tourRes[i].title,
+          place_url: "카카오맵 주소 넣어야함",
+          category_name: tourRes[i].contenttypeid,
+          distance: String(parseInt(tourRes[i].dist)),
+          x: tourRes[i].mapx,
+          y: tourRes[i].mapy,
+          road_address_name: tourRes[i].addr1,
+          img: tourRes[i].firstimage,
+        });
+        // // isLike 추가 작업
+        const likeCollection = await db.collection("like").findOne({
+          uuid: req.headers.uuid,
+          road_address_name: places[i].road_address_name,
+        });
+        console.log(likeCollection);
+        places[i].isLike = likeCollection ? true : false;
       }
 
       response.status(200).send(places);

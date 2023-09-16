@@ -30,7 +30,7 @@ router.get("/", (req, response) => {
 
         places.push({
           place_name: tourRes[i].title,
-          place_url: "카카오맵 주소 넣어야함",
+          place_url: `https://search.daum.net/search?w=tot&q=${tourRes[i].title}`,
           category_name: tourRes[i].contenttypeid,
           distance: String(parseInt(tourRes[i].dist)),
           x: tourRes[i].mapx,

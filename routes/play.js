@@ -21,23 +21,47 @@ router.get("/", (req, response) => {
           continue;
         }
 
-        // 카테고리 필터과정 (숙박:32, 식당:39 제외)
+        // 카테고리 필터과정 (숙박:32, 쇼핑:38, 식당:39 제외)
         const contenttypeid = parseInt(tourRes[i].contenttypeid);
-        if (contenttypeid === 32 || contenttypeid === 39) {
+        if (
+          contenttypeid === 32 ||
+          contenttypeid === 38 ||
+          contenttypeid === 39
+        ) {
           tourRes.splice(i--, 1);
           continue;
         }
 
+        // 12:관광지, 14:문화시설, 15:축제공연행사, 25:여행코스, 28:레포츠, 32:숙박, 38:쇼핑, 39:음식점
+        let cate;
+        switch (parseInt(tourRes[i].contenttypeid)) {
+          case 12:
+            cate = "관광지";
+            break;
+          case 14:
+            cate = "문화시설";
+            break;
+          case 15:
+            cate = "축제 및 공연";
+            break;
+          case 25:
+            cate = "여행코스";
+            break;
+          case 28:
+            cate = "레포츠";
+            break;
+        }
         places.push({
           place_name: tourRes[i].title,
           place_url: `https://search.daum.net/search?w=tot&q=${tourRes[i].title}`,
-          category_name: tourRes[i].contenttypeid,
+          category_name: cate,
           distance: String(parseInt(tourRes[i].dist)),
           x: tourRes[i].mapx,
           y: tourRes[i].mapy,
           road_address_name: tourRes[i].addr1,
           img: tourRes[i].firstimage,
         });
+
         // // isLike 추가 작업
         const likeCollection = await db.collection("like").findOne({
           uuid: req.headers.uuid,

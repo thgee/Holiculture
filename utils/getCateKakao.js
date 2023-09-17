@@ -41,7 +41,7 @@ const getCateKakao = (ticket, cate, distance, db) => {
         );
         // 이미지 추가 작업 (이미지가 없다면 places에서 제거시킴)
         let image = await getImgKakao(places[i]);
-        if (image) places[i].img = image;
+        if (image) places[i].img = image.replace(/^http(?!s)/, "https");
         else {
           places.splice(i--, 1);
           continue;

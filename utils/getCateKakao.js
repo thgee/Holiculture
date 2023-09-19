@@ -1,4 +1,3 @@
-const getBlogNaver = require("./getBlogNaver");
 const getImgKakao = require("./getImgKakao");
 
 const getCateKakao = (ticket, cate, distance, db) => {

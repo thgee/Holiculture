@@ -1,6 +1,5 @@
 const router = require("express").Router();
 const getCateKakao = require("../utils/getCateKakao");
-const getPlaceInfoNaver = require("../utils/getPlaceInfoNaver");
 
 router.get("/", (req, response) => {
   let db = req.db; // server.js 에서 넘겨준 db

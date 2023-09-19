@@ -1,5 +1,4 @@
 const router = require("express").Router();
-const getCateKakao = require("../utils/getCateKakao");
 const tourApi = require("../utils/tourApi");
 
 router.get("/", (req, response) => {

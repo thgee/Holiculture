@@ -1,5 +1,4 @@
 const express = require("express");
-const tourApi = require("./utils/tourApi");
 const app = express();
 const MongoClient = require("mongodb").MongoClient; // 몽고db 연결
 require("dotenv").config(); // 환경변수
@@ -31,11 +30,10 @@ app.use((req, res, next) => {
 
 //  ================ 라우팅 ================
 app.use("/ticket", require("./routes/ticket"));
-app.use("/uuid", require("./routes/getuuid"));
 app.use("/food", require("./routes/food"));
 app.use("/room", require("./routes/room"));
 app.use("/play", require("./routes/play"));
 app.use("/like", require("./routes/like"));
 app.use("/board", require("./routes/board"));
 app.use("/comment", require("./routes/comment"));
-app.use("/art", require("./routes/getArt"));
+app.use("/art", require("./routes/art"));

@@ -32,7 +32,7 @@ router.get("/", (req, response) => {
           continue;
         }
 
-        // 12:관광지, 14:문화시설, 15:축제공연행사, 25:여행코스, 28:레포츠, 32:숙박, 38:쇼핑, 39:음식점
+        // 카테고리 변환
         let cate;
         switch (parseInt(tourRes[i].contenttypeid)) {
           case 12:
@@ -59,7 +59,7 @@ router.get("/", (req, response) => {
           x: tourRes[i].mapx,
           y: tourRes[i].mapy,
           road_address_name: tourRes[i].addr1,
-          img: tourRes[i].firstimage,
+          img: tourRes[i].firstimage.replace(/^http(?!s)/, "https"),
         });
 
         // // isLike 추가 작업

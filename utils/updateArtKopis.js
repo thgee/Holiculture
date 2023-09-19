@@ -36,7 +36,7 @@ const updateArt = (startDate, endDate) => {
             console.log(arts.length);
             // 공연정보를 하나씩 돌면서 db에 저장
             for (let i = 0; i < arts.length; i++) {
-              await delay(20);
+              await delay(5);
 
               let id;
               let it = arts[i];
@@ -55,19 +55,18 @@ const updateArt = (startDate, endDate) => {
                   id = data.id;
                   return db.collection("art").findOne({
                     title: it?.prfnm[0],
-                    startDate: String(it?.prfpdfrom[0]),
+                    startDate: it?.prfpdfrom[0].replace(/\./g, ""),
                   });
                 })
                 .then((data) => {
                   if (data) {
-                    console.log("이미 저장된 공연 정보입니다.");
-                    return;
+                    throw new Error("이미 저장된 공연 정보입니다.");
                   }
                   return db.collection("art").insertOne({
                     _id: id + 1,
                     title: it?.prfnm[0],
-                    startDate: it?.prfpdfrom[0],
-                    endDate: it?.prfpdto[0],
+                    startDate: it?.prfpdfrom[0].replace(/\./g, ""),
+                    endDate: it?.prfpdto[0].replace(/\./g, ""),
                     img: it?.poster[0].replace(/^http(?!s)/, "https"),
                     location: it?.fcltynm[0],
                     cate: it?.genrenm[0],
@@ -80,7 +79,7 @@ const updateArt = (startDate, endDate) => {
                       { name: "artId" },
                       { $inc: { id: 1 } }
                     );
-                    console.log(it.img);
+                    console.log(id);
                   },
                   (err) => {
                     console.log(err.message);

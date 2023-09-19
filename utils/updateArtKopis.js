@@ -58,12 +58,14 @@ const updateArt = (startDate, endDate) => {
                     startDate: it?.prfpdfrom[0].replace(/\./g, ""),
                   });
                 })
+
                 .then(async (data) => {
                   if (data) {
                     throw new Error("이미 저장된 공연 정보입니다.");
                   }
 
                   let art = await getDetailInfo(it.mt20id);
+
                   art = {
                     _id: id + 1,
                     title: it?.prfnm[0],
@@ -116,6 +118,7 @@ const getDetailInfo = (code) => {
         });
 
         res = {
+          summary: info.sty[0],
           cast: info.prfcast[0],
           crew: info.prfcrew[0],
           runtime: info.prfruntime[0],

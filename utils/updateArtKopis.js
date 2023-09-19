@@ -21,7 +21,7 @@ const updateArt = (startDate, endDate) => {
       db = client.db("Holliculture");
       // kopis에서 공연정보 불러오기
       fetch(
-        `https://www.kopis.or.kr/openApi/restful/pblprfr?service=${process.env.KOPIS_API}&stdate=${startDate}&eddate=${endDate}&cpage=1&rows=5000`,
+        `https://www.kopis.or.kr/openApi/restful/pblprfr?service=${process.env.KOPIS_API}&stdate=${startDate}&eddate=${endDate}&cpage=1&rows=4000`,
         {
           method: "GET",
         }
@@ -58,20 +58,25 @@ const updateArt = (startDate, endDate) => {
                     startDate: it?.prfpdfrom[0].replace(/\./g, ""),
                   });
                 })
-                .then((data) => {
+                .then(async (data) => {
                   if (data) {
                     throw new Error("이미 저장된 공연 정보입니다.");
                   }
-                  return db.collection("art").insertOne({
+
+                  let art = await getDetailInfo(it.mt20id);
+                  art = {
                     _id: id + 1,
                     title: it?.prfnm[0],
                     startDate: it?.prfpdfrom[0].replace(/\./g, ""),
                     endDate: it?.prfpdto[0].replace(/\./g, ""),
-                    img: it?.poster[0].replace(/^http(?!s)/, "https"),
+                    titleImg: it?.poster[0].replace(/^http(?!s)/, "https"),
                     location: it?.fcltynm[0],
                     cate: it?.genrenm[0],
                     address: address,
-                  });
+                    ...art,
+                  };
+
+                  return db.collection("art").insertOne(art);
                 })
                 .then(
                   (data) => {
@@ -90,6 +95,40 @@ const updateArt = (startDate, endDate) => {
         });
     }
   );
+};
+
+// 공연 상세정보 받아오기
+const getDetailInfo = (code) => {
+  return fetch(
+    `http://www.kopis.or.kr/openApi/restful/pblprfr/${code}?service=${process.env.KOPIS_API}`,
+    {
+      method: "GET",
+    }
+  )
+    .then((response) => response.text())
+    .then(async (data) => {
+      let res;
+      await parseString(data, function (err, result) {
+        let info = result.dbs?.db[0];
+
+        info.styurls[0] = info.styurls[0].styurl.map((it) => {
+          return it.replace(/^http(?!s)/, "https");
+        });
+
+        res = {
+          cast: info.prfcast[0],
+          crew: info.prfcrew[0],
+          runtime: info.prfruntime[0],
+          age: info.prfage[0],
+          producer: info.entrpsnm[0],
+          price: info.pcseguidance[0],
+          time: info.dtguidance[0],
+          openrun: info.openrun[0],
+          subImgs: info.styurls[0],
+        };
+      });
+      return res;
+    });
 };
 
 const getPlaceCode = (place_name) => {

@@ -37,3 +37,4 @@ app.use("/like", require("./routes/like"));
 app.use("/board", require("./routes/board"));
 app.use("/comment", require("./routes/comment"));
 app.use("/art", require("./routes/art"));
+app.use("/reset", require("./routes/reset"));

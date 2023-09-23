@@ -1,7 +1,7 @@
 const router = require("express").Router();
 const tourApi = require("../utils/tourApi");
 
-router.get("/", (req, response) => {
+router.get("/:page", (req, response) => {
   let db = req.db; // server.js 에서 넘겨준 db
 
   db.collection("ticket").findOne(
@@ -10,7 +10,12 @@ router.get("/", (req, response) => {
       if (err) return response.status(500).send("internet error");
       if (!result) return response.status(404).send("invalid ticket or uuid");
 
-      const tourRes = await tourApi(result, req.query.distance, db);
+      const tourRes = await tourApi(
+        result,
+        req.query.distance,
+        db,
+        req.params.page
+      );
       const places = [];
 
       for (let i = 0; i < tourRes?.length; i++) {

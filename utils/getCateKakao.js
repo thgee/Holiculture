@@ -1,8 +1,10 @@
 const getImgKakao = require("./getImgKakao");
 
-const getCateKakao = (ticket, cate, distance, db) => {
+let isEndPage = false;
+
+const getCateKakao = (ticket, cate, distance, db, page) => {
   return fetch(
-    `https://dapi.kakao.com/v2/local/search/category.json?category_group_code=${cate}&page=1&size=10&sort=accuracy&x=${parseFloat(
+    `https://dapi.kakao.com/v2/local/search/category.json?category_group_code=${cate}&page=${page}&size=10&sort=accuracy&x=${parseFloat(
       ticket?.posX
     )}&y=${parseFloat(ticket?.posY)}&radius=${parseInt(distance) || 500}`,
     {
@@ -14,6 +16,10 @@ const getCateKakao = (ticket, cate, distance, db) => {
       return response.json();
     })
     .then(async (data) => {
+      if (parseInt(page) === 1) isEndPage = false;
+      if (isEndPage) return [];
+      isEndPage = data.meta.is_end;
+
       let places = data.documents?.map((place) => {
         return {
           place_name: place.place_name,
@@ -26,7 +32,7 @@ const getCateKakao = (ticket, cate, distance, db) => {
         };
       });
 
-      for (let i = 0; i < places.length; i++) {
+      for (let i = 0; i < places?.length; i++) {
         // isLike 추가 작업
         db.collection("like").findOne(
           {

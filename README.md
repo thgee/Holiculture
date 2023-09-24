@@ -1,12 +1,18 @@
 # <img width="30" height="30" alt="" src="https://github.com/Holiculture/Holiculture/assets/126135097/c66e31aa-1cad-4c38-865b-d1c274a50031">  Holiculture
+<img width="13.5%" alt="1" src="https://github.com/Holiculture/Holiculture/assets/126135097/c5adf3a8-ec06-48e9-bee6-87c45dee5d76">
+<img width="13.5%" alt="2" src="https://github.com/Holiculture/Holiculture/assets/126135097/ed6edb97-9a2c-4e23-adb8-d81ba98cce6e">
+<img width="13.5%" alt="3" src="https://github.com/Holiculture/Holiculture/assets/126135097/d4f7b9aa-2699-41de-9930-c09b015f194b">
+<img width="13.5%" alt="4" src="https://github.com/Holiculture/Holiculture/assets/126135097/6bb231c8-f18f-4b4f-b7ff-c3cc00ff9aa0">
+<img width="13.5%" alt="5" src="https://github.com/Holiculture/Holiculture/assets/126135097/f19cb2b0-d78f-437c-9d09-1cb57a928acb">
+<img width="13.5%" alt="6" src="https://github.com/Holiculture/Holiculture/assets/126135097/9064b65c-2ed0-4b98-bcac-bf5b0b3a6699">
+<img width="13.5%" alt="7" src="https://github.com/Holiculture/Holiculture/assets/126135097/fb5fd0c5-57a0-4e30-93c8-f08cea897cf1">
 
-<img width="13.5%" alt="1" src="https://github.com/Holiculture/Holiculture/assets/126135097/efe029db-113d-4d2b-9ddf-fb3c392751a7">
-<img width="13.5%" alt="2" src="https://github.com/Holiculture/Holiculture/assets/126135097/7b860c61-8f42-4440-9bd4-160e351872e0">
-<img width="13.5%" alt="3" src="https://github.com/Holiculture/Holiculture/assets/126135097/35ca0898-f7c4-4501-a254-793e607e8b4c">
-<img width="13.5%" alt="4" src="https://github.com/Holiculture/Holiculture/assets/126135097/0c477adf-a5a0-4d7b-adbd-9d1cf4a6cc24">
-<img width="13.5%" alt="5" src="https://github.com/Holiculture/Holiculture/assets/126135097/7e82b92b-e311-41c1-a379-e3d42501dda5">
-<img width="13.5%" alt="6" src="https://github.com/Holiculture/Holiculture/assets/126135097/fcabc146-2c1d-4ade-a63a-fca73d3bb437">
-<img width="13.5%" alt="7" src="https://github.com/Holiculture/Holiculture/assets/126135097/8fa97b36-626c-43ee-860f-5eb72e3fe40b">
+
+
+
+
+
+
 
 ## 📒 Overview
 문화생활을 하러 타지역에 가게 될 경우, 제대로 된 여행을 가는 것이 아닌 공연을 즐기는 것이 주된 목적이므로 공연날 방문해야 할 식당, 숙소 등을 찾는 것이 번거롭다고 느껴졌고 이러한 불편함을 느끼는 사람들이 적지 않다는 것을 알게 되었습니다.

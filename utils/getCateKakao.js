@@ -18,6 +18,10 @@ const getCateKakao = (ticket, cate, distance, db, page) => {
     .then(async (data) => {
       if (parseInt(page) === 1) isEndPage = false;
       if (isEndPage) return [];
+      if (page >= 20) {
+        isEndPage = true;
+        return [];
+      }
       isEndPage = data.meta.is_end;
 
       let places = data.documents?.map((place) => {

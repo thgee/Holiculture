@@ -1,7 +1,7 @@
 const router = require("express").Router();
 const tourApi = require("../utils/tourApi");
 
-router.get("/:page", (req, response) => {
+router.get("/:page?", (req, response) => {
   let db = req.db; // server.js 에서 넘겨준 db
 
   db.collection("ticket").findOne(
@@ -13,9 +13,9 @@ router.get("/:page", (req, response) => {
       const tourRes = await tourApi(
         result,
         req.query.distance,
-        db,
-        req.params.page
+        req.params.page || 1
       );
+
       const places = [];
 
       for (let i = 0; i < tourRes?.length; i++) {
@@ -71,7 +71,6 @@ router.get("/:page", (req, response) => {
           uuid: req.headers.uuid,
           road_address_name: places[i].road_address_name,
         });
-        console.log(likeCollection);
         places[i].isLike = likeCollection ? true : false;
       }
 

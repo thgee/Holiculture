@@ -1,4 +1,4 @@
-# <img width="30" height="30" alt="" src="https://github.com/Holiculture/Holiculture/assets/126135097/c66e31aa-1cad-4c38-865b-d1c274a50031">  Holiculture
+# <img width="30" height="30" alt="" src="https://github.com/Holiculture/Holiculture/assets/126135097/66a6d012-0116-46fa-b2f7-545978ea6443">  Holiculture
 <img width="13.5%" alt="1" src="https://github.com/Holiculture/Holiculture/assets/126135097/c5adf3a8-ec06-48e9-bee6-87c45dee5d76">
 <img width="13.5%" alt="2" src="https://github.com/Holiculture/Holiculture/assets/126135097/ed6edb97-9a2c-4e23-adb8-d81ba98cce6e">
 <img width="13.5%" alt="3" src="https://github.com/Holiculture/Holiculture/assets/126135097/d4f7b9aa-2699-41de-9930-c09b015f194b">
@@ -6,7 +6,6 @@
 <img width="13.5%" alt="5" src="https://github.com/Holiculture/Holiculture/assets/126135097/f19cb2b0-d78f-437c-9d09-1cb57a928acb">
 <img width="13.5%" alt="6" src="https://github.com/Holiculture/Holiculture/assets/126135097/9064b65c-2ed0-4b98-bcac-bf5b0b3a6699">
 <img width="13.5%" alt="7" src="https://github.com/Holiculture/Holiculture/assets/126135097/fb5fd0c5-57a0-4e30-93c8-f08cea897cf1">
-
 
 
 

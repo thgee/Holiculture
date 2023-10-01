@@ -1,6 +1,6 @@
-// 한달에 한번 터미널로 해당 js파일을 실행하세요
+// 정기적으로 터미널로 해당 js파일을 실행하세요
 // KOPIS의 OpenAPI에서 공연정보를 받아와 DB를 업데이트 합니다
-// 23.09.11 ~ 23.10.10 업데이트 완료
+// 23.10.01 ~ 23.12.31 업데이트 완료
 
 var parseString = require("xml2js").parseString;
 const MongoClient = require("mongodb").MongoClient; // 몽고db 연결
@@ -61,6 +61,7 @@ const updateArt = (startDate, endDate) => {
 
                 .then(async (data) => {
                   if (data) {
+                    console.log(data);
                     throw new Error("이미 저장된 공연 정보입니다.");
                   }
 
@@ -175,4 +176,4 @@ const addAddress = (code) => {
     });
 };
 
-updateArt(20230911, 20231010);
+updateArt(20231001, 20231231);

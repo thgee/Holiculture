@@ -4,7 +4,8 @@
 
 <br>
 
-# <img width="30" height="30" alt="" src="https://github.com/Holiculture/Holiculture/assets/126135097/66a6d012-0116-46fa-b2f7-545978ea6443">  Holiculture
+
+# <img width="30" height="30" alt="" src="https://github.com/user-attachments/assets/a3e673d2-38a9-4762-840e-70b89b24dc08">  Holiculture
 <img width="13.5%" alt="holliculture1" src="https://github.com/user-attachments/assets/6b2d7925-750b-4984-8cbf-76b5b714c9cb">
 <img width="13.5%" alt="holliculture2" src="https://github.com/user-attachments/assets/f9a518b1-aeda-44c6-a6d9-42c90c008df6">
 <img width="13.5%" alt="holliculture3" src="https://github.com/user-attachments/assets/20660c21-33d7-41fa-9304-471b736fd3f3">
